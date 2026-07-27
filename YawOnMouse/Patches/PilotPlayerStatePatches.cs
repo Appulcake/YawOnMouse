@@ -8,6 +8,24 @@ namespace YawOnMouse.Patches;
 
 public class PilotPlayerStatePatches
 {
+    [HarmonyPatch]
+    static class GeneralPilotPlayerStatePatches
+    {
+        [HarmonyPatch(typeof(PilotPlayerState), nameof(PilotPlayerState.EnterState))]
+        [HarmonyPostfix]
+        private static void EnterStatePostfix()
+        {
+            Plugin.PilotInControl = true;
+        }
+        
+        [HarmonyPatch(typeof(PilotPlayerState), nameof(PilotPlayerState.LeaveState))]
+        [HarmonyPostfix]
+        private static void LeaveStatePostfix()
+        {
+            Plugin.PilotInControl = false;
+        }
+    }
+    
     [HarmonyPatch(typeof(PilotPlayerState), "PlayerAxisControls")]
     static class PlayerAxisControls
     {
@@ -16,7 +34,7 @@ public class PilotPlayerStatePatches
             var codes = new List<CodeInstruction>(instructions);
 
             // default game behaviour is roll (no patch needed)
-            if (Plugin.AxisPatchType.Value == AxisPatchType.Roll) return instructions;
+            if (Plugin.AxisPatchType.Value == AxisPatchType.Roll) return codes;
             if (Plugin.AxisPatchType.Value == AxisPatchType.Yaw) return Yaw(codes, il);
             
             return codes;

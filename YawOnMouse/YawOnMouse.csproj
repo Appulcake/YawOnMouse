@@ -46,6 +46,9 @@
       <Reference Include="UnityEngine.CoreModule">
         <HintPath>$(GameDir)\NuclearOption_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       </Reference>
+        <Reference Include="InputFramework">
+            <HintPath>$(SolutionDir)\InputFramework.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
